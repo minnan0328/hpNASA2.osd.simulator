@@ -48,7 +48,7 @@ function convertRange(value: number, rangeMin: number, rangeMax: number) {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 
 .range {
     .vertical-range {

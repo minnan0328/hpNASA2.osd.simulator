@@ -111,11 +111,6 @@ export default class Input extends DefaultNodes implements Nodes {
             ...JSON.parse(JSON.stringify(AutoSwitchInputNodesEnum)),
             parents: this.key
         },
-        // Audio
-        {
-            ...JSON.parse(JSON.stringify(AudioNodesEnum)),
-            parents: this.key
-        },
         // DP Hot-Plug Detection
         {
             ...JSON.parse(JSON.stringify(DPHotPlugDetectionNodesEnum)),
@@ -126,13 +121,11 @@ export default class Input extends DefaultNodes implements Nodes {
             ...JSON.parse(JSON.stringify(DisplayPortModeNodesEnum)),
             parents: this.key
         },
-
         // 重置
         {
             ...JSON.parse(JSON.stringify(ResetNodesEnum)),
             parents: this.key,
             mergeGrid: true
-
         },
         // 返回
         {

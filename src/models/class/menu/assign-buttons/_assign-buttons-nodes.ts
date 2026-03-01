@@ -9,7 +9,6 @@ import {
     AssignColorNodes,
     AssignDisplayInformationNodes,
     AssignNextActiveInputNodes,
-    AssignVolumeNodes,
     AssignEmptyNodes
 } from './_utilities';
 
@@ -20,7 +19,6 @@ const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 const AssignDisplayInformationNodesEnum = new AssignDisplayInformationNodes();
 const AssignNextActiveInputNodesEnum = new AssignNextActiveInputNodes();
-const AssignVolumeNodesEnum = new AssignVolumeNodes();
 const AssignEmptyNodesEnum = new AssignEmptyNodes();
 
 export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
@@ -90,10 +88,6 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
                     parents: "AssignButton1"
                 },
                 {
-                    ...JSON.parse(JSON.stringify(AssignVolumeNodesEnum)),
-                    parents: "AssignButton1"
-                },
-                {
                     ...JSON.parse(JSON.stringify(AssignEmptyNodesEnum)),
                     parents: "AssignButton1"
                 },
@@ -110,8 +104,8 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
             // Y input == HDMI (FD=Volume)
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "AssignButton2",
-            selected: AssignVolumeNodesEnum.selected,
-            result: AssignVolumeNodesEnum.result,
+            selected: AssignColorNodesEnum.selected,
+            result: AssignColorNodesEnum.result,
             displayValue: true,
             displayState: true,
             size: 8,
@@ -150,10 +144,6 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
                 },
                 {
                     ...JSON.parse(JSON.stringify(AssignNextActiveInputNodesEnum)),
-                    parents: "AssignButton2"
-                },
-                {
-                    ...JSON.parse(JSON.stringify(AssignVolumeNodesEnum)),
                     parents: "AssignButton2"
                 },
                 {
@@ -212,10 +202,6 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
                 },
                 {
                     ...JSON.parse(JSON.stringify(AssignNextActiveInputNodesEnum)),
-                    parents: "AssignButton3"
-                },
-                {
-                    ...JSON.parse(JSON.stringify(AssignVolumeNodesEnum)),
                     parents: "AssignButton3"
                 },
                 {

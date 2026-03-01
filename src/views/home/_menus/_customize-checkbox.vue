@@ -60,7 +60,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 .customize-checkbox {
     border: 1px solid transparent;
 

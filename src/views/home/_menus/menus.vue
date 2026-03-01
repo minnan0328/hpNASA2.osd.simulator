@@ -131,12 +131,11 @@ import iconAdd from '@/assets/icons/icon-add.svg';
 import iconPrevious from '@/assets/icons/icon-previous.svg';
 import iconInformation from '@/assets/icons/icon-information.svg';
 import iconAutoAdjustment from '@/assets/icons/icon-auto-adjustment.svg';
-import iconSoundVolume from '@/assets/icons/icon-sound-volume.svg';
 
 import { 
     AssignAutoAdjustmentNodes, AssignBrightnessNodes,
     AssignColorNodes, AssignDisplayInformationNodes,
-    AssignNextActiveInputNodes, AssignVolumeNodes, AssignEmptyNodes
+    AssignNextActiveInputNodes, AssignEmptyNodes
 } from '@/models/class/menu/assign-buttons/_utilities';
 
 import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
@@ -160,7 +159,6 @@ const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 const AssignDisplayInformationNodesEnum = new AssignDisplayInformationNodes();
 const AssignNextActiveInputNodesEnum = new AssignNextActiveInputNodes();
-const AssignVolumeNodesEnum = new AssignVolumeNodes();
 const AssignEmptyNodesEnum = new AssignEmptyNodes();
 
 const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
@@ -270,11 +268,6 @@ const assignMenus = computed(() => {
             icon: iconInput,
             node: store.$state.input
         },
-        [AssignVolumeNodesEnum.key]: {
-            key: AssignVolumeNodesEnum.key,
-            icon: iconSoundVolume,
-            node: store.$state.input.nodes[4].nodes[4]
-        },
         [AssignEmptyNodesEnum.key]: {
             key: AssignEmptyNodesEnum.key,
             icon: null,
@@ -286,16 +279,16 @@ const assignMenus = computed(() => {
 // 取得自訂選單項目
 const getAssignButton = computed(() => {
     return [
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![0].result as string).replace(/\s/g, '')}`],
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![1].result as string).replace(/\s/g, '')}`],
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![2].result as string).replace(/\s/g, '')}`]
+        assignMenus.value[`Assign${(store.$state.menu.nodes[5].nodes![0].result as string).replace(/\s/g, '')}`],
+        assignMenus.value[`Assign${(store.$state.menu.nodes[5].nodes![1].result as string).replace(/\s/g, '')}`],
+        assignMenus.value[`Assign${(store.$state.menu.nodes[5].nodes![2].result as string).replace(/\s/g, '')}`]
     ]
 });
 
 // 小選單項目順序
 const assignPanelOrder = reactive([
     AssignBrightnessNodesEnum.key, AssignColorNodesEnum.key,
-    AssignDisplayInformationNodesEnum.key, AssignNextActiveInputNodesEnum.key, AssignVolumeNodesEnum.key
+    AssignDisplayInformationNodesEnum.key, AssignNextActiveInputNodesEnum.key
 ]);
 
 // power confirm message menuState
@@ -309,7 +302,7 @@ const confirmState = reactive({
 });
 
 // 是否開啟OSD Message，當是原廠設定時，且 OSD Message 是啟用時
-const isOpenOSDMessage = computed(() => factorySettings.value && store.$state.menu.nodes[5].result.includes(store.$state.menu.nodes[5].nodes[2].result))
+const isOpenOSDMessage = computed(() => factorySettings.value && store.$state.menu.nodes[4].result.includes(store.$state.menu.nodes[5].nodes[2].result))
 
 // 當關閉螢幕時，關閉所有狀態
 watch(() => props.openMonitor, (newVal, oldVal) => {
@@ -461,17 +454,8 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 當下一層有節點時候的組合
     const nextButtonList: ControllerButtonList[] = [ ControllerTypes.next, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ];
 
-    // 選單不同旋轉角度組合
-    type MenuRotationValue = 0 | 90 | 180 | 270;
-    const confirmedButtonListObj: Record<MenuRotationValue, ControllerButtonList[]> = {
-        0: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ],
-        90: [ ControllerTypes.previous, ControllerTypes.arrowUp, ControllerTypes.arrowBottom, ControllerTypes.checkSave! ],
-        180: [ ControllerTypes.previous, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.checkSave! ],
-        270: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ]
-    };
-
     // 確認選擇的按鈕組合
-    const confirmedButtonList: ControllerButtonList[] = confirmedButtonListObj[menuStateResult.value.menuRotationValue as MenuRotationValue];
+    const confirmedButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ];
     // range value 組合
     const rangeButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!,  ControllerTypes.rangeSubtract,  ControllerTypes.rangeAdd, ControllerTypes.previous ];
     // 多個 range value 組合
@@ -1346,9 +1330,6 @@ function returnToDefaultValue() {
     store.$state.management.nodes[3].selected = OffNodesEnum.selected;
     store.$state.management.nodes[3].result = OffNodesEnum.result;
 
-    // 選單旋轉角度恢復
-    store.$state.menu.nodes[4].selected = "Landscape (0°)";
-    store.$state.menu.nodes[4].result = "Landscape (0°)";
 }
 
 
@@ -1403,7 +1384,7 @@ function handlerMenuTimeout() {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 
 .menu-wrapper {
     position: absolute;
@@ -1423,7 +1404,6 @@ function handlerMenuTimeout() {
 	width: v-bind("menuStateResult.menuSize.menuWidth");
 	height: v-bind("menuStateResult.menuSize.menuHeight");
     z-index: 2;
-    transform: rotate(v-bind("menuStateResult.menuRotation"));
 
 	.header,
 	.footer {
@@ -1505,7 +1485,6 @@ function handlerMenuTimeout() {
     opacity: v-bind("menuStateResult.menuTransparency");
     
     &.accessibility {
-        transform: scale(1.2) rotate(v-bind("menuStateResult.menuRotation"));
         bottom: 74px;
         left: 276px;
         margin: 0;
@@ -1565,7 +1544,6 @@ function handlerMenuTimeout() {
 
 		img {
             width: 16px;
-            transform:  rotate(v-bind("menuStateResult.menuRotation"));
 		}
 	}
 }

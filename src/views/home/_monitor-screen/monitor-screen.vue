@@ -83,7 +83,7 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 .screen-initial {
     position: absolute;
     top: 0px;

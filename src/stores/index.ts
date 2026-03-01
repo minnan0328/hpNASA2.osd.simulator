@@ -6,8 +6,7 @@ import {
 } from '@/models/index';
 
 
-import { AssignVolumeNodes, AssignColorNodes } from '@/models/class/menu/assign-buttons/_utilities';
-const AssignVolumeNodesEnum = new AssignVolumeNodes();
+import { AssignColorNodes } from '@/models/class/menu/assign-buttons/_utilities';
 const AssignColorNodesEnum = new AssignColorNodes();
 
 export interface StoreState {
@@ -42,13 +41,10 @@ export class MenusDefaultModel implements StoreState  {
 export const useStore = defineStore('counter', () => {
     const state = reactive<StoreState>(new MenusDefaultModel());
 
-    // 選擇 VGA 時更換分配按鈕2的項目
+    // 選擇 VGA 時更換 information : 60Hz for VGA, 120Hz for DP/HDMI
     function setAssignButtonValue() {
-        const assignButton2Result = state.input.result === "VGA" ? AssignColorNodesEnum : AssignVolumeNodesEnum;
-        if (state.menu.nodes[6]?.nodes?.[1]) {
-            state.menu.nodes[6].nodes[1].selected = assignButton2Result.selected;
-            state.menu.nodes[6].nodes[1].result = assignButton2Result.result;
-        }
+        state.information.nodes[1].selected = state.input.result === "VGA" ? "1920x1080 60Hz" : "1920x1080 120Hz";
+        state.information.nodes[1].result = state.input.result === "VGA" ? "1920x1080 60Hz" : "1920x1080 120Hz";
     }
 
     function $resetAll() {

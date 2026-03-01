@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="top"></div>
                             <div class="info">
-                                Welcome to the {{config.company}} {{config.screenModel}} OSD Simulator. Please press the power button and then select an input source.
+                                Welcome to the {{config.company}} {{config.screenModel}} OSD-G Simulator. Please press the power button and then select an input source.
                             </div>
                         </div>
                     </div>
@@ -277,7 +277,7 @@ provide<HomeEvent>("homeEvent", {
 </script>
 
 <style lang="scss" >
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 
 .container {
     display: flex;

@@ -90,9 +90,6 @@ export const menuStateResult = computed(() => {
         deviation = maxDecrease - decrease * (menu.value.nodes[1].nodes![0].result as number - increaseThreshold);
     }
 
-    // 取得選單旋轉角度
-    let getMenuRotation = extractStringFromParentheses(menu.value.nodes[4].result);
-
     return {
         // 選單寬度與高度
         menuSize: {
@@ -102,33 +99,29 @@ export const menuStateResult = computed(() => {
         // 選單座標位置，旋轉角度的座標位置為 demo 使用，當返回上一步時，就會復原原本選單角度
         menuPosition: {
             // 水平
-            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "530px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
+            x: `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
             // 垂直
-            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "90px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 18) + 18}px`
+            y: `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 18) + 18}px`
         },
         // 選單透明度
         menuTransparency: ((10 - (menu.value.nodes[2].result as number)) / 10) + 0.2,
         // 選單顯示時間
         menuTimeout: menu.value.nodes[3].result,
-        // 選單旋轉角度
-        menuRotationValue: getMenuRotation,
-        // 選單旋轉角度 css 設定使用
-        menuRotation: `-${getMenuRotation}deg`,
         // 螢幕 OSD 訊息
         OSDMessage: {
             // 取得是否螢幕電源開啟時顯示 LOGO
-            powerOnLogo: (menu.value.nodes[5].result as string).includes(menu.value.nodes[5].nodes![0].result as string),
+            powerOnLogo: (menu.value.nodes[4].result as string).includes(menu.value.nodes[4].nodes![0].result as string),
             // 取得是否顯示無輸入端警告
-            noInputSignalWarning: (menu.value.nodes[5].result as string).includes(menu.value.nodes[5].nodes![1].result as string),
+            noInputSignalWarning: (menu.value.nodes[4].result as string).includes(menu.value.nodes[4].nodes![1].result as string),
             // 取得是否啟用確認變更訊息 Confirm Change Message
-            confirmMessage: (menu.value.nodes[5].result as string).includes(menu.value.nodes[5].nodes![2].result as string),
+            confirmMessage: (menu.value.nodes[4].result as string).includes(menu.value.nodes[4].nodes![2].result as string),
         },
         // 取得螢幕狀態
         monitorStatus: {
             // 取得是否顯示螢幕狀態視窗
-            show: menu.value.nodes[5].nodes![3].result != OffNodesEnum.result ? true : false,
+            show: menu.value.nodes[4].nodes![3].result != OffNodesEnum.result ? true : false,
             // 取得螢幕狀態
-            nodes: menu.value.nodes[5].nodes![3]
+            nodes: menu.value.nodes[4].nodes![3]
         },
         // 取得輸入端
         input: input.value,
@@ -214,18 +207,6 @@ const getSharpness = computed(() => {
     }
 });
 
-// 取出括號中的數字，選單旋轉使用
-function extractStringFromParentheses(input: string): number {
-    const match = input.match(/\(([^)]+)\)/); // 匹配括號中的內容
-    if (match) {
-        const cleanedString = match[1].replace(/°/g, ""); // 移除 ° 符號
-        const number = parseFloat(cleanedString); // 將移除後的字串轉換為數字
-        return isNaN(number) ? 0 : number; // 確保結果為有效的數字
-    }
-    return 0;
-}
-
-
 // 函數表達式
 const removeAndLowercase = (str: string): string => {
     // 移除指定的子字符串
@@ -247,12 +228,6 @@ const patterns = ref([
 
 store.$subscribe((mutation, state) => {
     // 當音量不啟用時，所有相關音量設定都 disabled
-    let isEnableSpeakers = state.input.nodes[4].result.includes(state.input.nodes[4].nodes[0].result);
-    state.input.nodes[4].nodes[1].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[2].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[3].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[4].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[5].disabled = isEnableSpeakers == false;
 
     // 診斷模式需要透過監聽 store
     if(state.isDiagnosticPatterns) {

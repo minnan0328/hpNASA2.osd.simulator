@@ -21,7 +21,7 @@ let AssignButtonsNodesEnum = new AssignButtonsNodes();
 
 export default class Menu extends DefaultNodes implements Nodes {
     key = "Menu";
-    size = 9;
+    size = 8;
     page = 1;
     mode = ModeType.button;
     language = {
@@ -56,11 +56,6 @@ export default class Menu extends DefaultNodes implements Nodes {
         // 功能表延遲
         {
             ...JSON.parse(JSON.stringify(MenuTimeoutNodesEnum)),
-            parents: this.key
-        },
-        // 功能表旋轉
-        {
-            ...JSON.parse(JSON.stringify(MenuRotationNodesEnum)),
             parents: this.key
         },
         // OSD 訊息

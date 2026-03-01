@@ -40,12 +40,7 @@ const props = defineProps({
 });
 
 function isSelected(node: Nodes, previousNodes: (Nodes | null)) {
-    // Audio Follows Video 因為 UI 切版關係，不在自己的 child currentNode 裡面
-    if(previousNodes?.key == store.$state.input.nodes[4].key) {
-        return store.$state.input.nodes[4].nodes[1].selected == node.selected;
-    } else {
-        return previousNodes!.selected == node.selected;
-    }
+    return previousNodes!.selected == node.selected;
 }
 
 
@@ -62,7 +57,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 
 .customize-radio {
     height: 26px;

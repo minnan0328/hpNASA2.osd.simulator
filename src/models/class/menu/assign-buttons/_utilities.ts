@@ -78,14 +78,6 @@ export class AssignNextActiveInputNodes extends DefaultNodes implements Nodes {
     };
 };
 
-export class AssignVolumeNodes extends DefaultNodes implements Nodes {
-    key = "AssignVolume";
-    selected = "Volume";
-    result = "Volume";
-    mode = ModeType.radio;
-    language = volumeNodesEnum.language;
-};
-
 export class AssignEmptyNodes extends DefaultNodes implements Nodes {
     key = "AssignEmpty(NoFunction)";
     selected = "Empty (No Function)";

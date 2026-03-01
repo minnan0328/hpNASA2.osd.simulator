@@ -4,7 +4,7 @@
             <img src="@/assets/images/hp-old-logo.svg" alt="HP">
         </div>
         <div class="title">
-            <h2>{{config.screenModel}} OSD Simulator</h2>
+            <h2>{{config.screenModel}} OSD-G Simulator</h2>
         </div>
     </div>
 </template>
@@ -12,7 +12,7 @@
 import config from '@/config/config';
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+@use '@/styles/_var' as *;
 .ribbon {
     background-color: #0083ca;
     width: initial;
