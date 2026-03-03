@@ -1035,11 +1035,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         AutoAdjustment: () => {
             handlerClose();
             homeEvent.autoAdjustment();
-        },
-        // 測試喇叭
-        InternalSpeakerSelfTest: () => {
-            handlerClose();
-            homeEvent.speakerSelfTest();
         }
     };
 

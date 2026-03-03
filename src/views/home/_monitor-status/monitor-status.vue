@@ -1,5 +1,5 @@
 <template>
-    <div :class="['monitor-status', position]" v-show="show">
+    <div :class="['monitor-status', 'top']" v-show="show">
         <div class="monitor-status-title">{{ toLanguageText(menuStateResult.monitorStatus.nodes.language!) }}</div>
         <div class="monitor-status-info input">
             <template v-for="currentInput in menuStateResult.input.nodes">
@@ -39,10 +39,6 @@ const props = defineProps({
     show: {
         type: Boolean,
         default: true
-    },
-    position: {
-        type: String,
-        default: "Top"
     }
 });
 

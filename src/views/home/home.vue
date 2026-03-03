@@ -187,53 +187,6 @@ function autoAdjustment() {
     }, 100);
 };
 
-// 聲音測試
-let audio = ref<HTMLAudioElement | null>(null);
-function speakerSelfTest() {
-    audio.value = null;
-    // 建立測試聲音
-    audio.value = new Audio(hp227peSound);
-    
-    audio.value.addEventListener("loadedmetadata", () => {
-        toastObj.value.timeout = audio.value!.duration * 1000;
-
-        audio.value!.play()
-            .then(res => {
-    
-            toastObj.value.open = true;
-            toastObj.value.images = iconSound;
-            toastObj.value.message = {
-                German: "Lautsprecherselbsttest wird durchgeführt",
-                SimplifiedChinese: "正在进行扬声器自测",
-                TraditionalChinese: "喇叭自我測試中",
-                English: "Speaker Self-Test in Progress",
-                Español: "Autotest altavoz en curso",
-                French: "Test auto. du haut-parleur en cours",
-                Italian: "Test autodiagnostico altoparlante in corso",
-                Japanese: "スピーカー自己診断実行中",
-                Nederlands: "Luidsprekerzelftest wordt uitgevoerd",
-                BrazilianPortuguese: "Autoteste de alto-falante em progresso",
-                Russian: "Выполняется самопроверка встр. динамика"
-            };
-            
-        })
-        .catch((error) => {
-            console.error("Playback Failed:", error);
-        });
-    
-    });
-
-    audio.value.addEventListener("ended", () => {
-        audio.value = null;
-        resetToast();
-    });
-
-    audio.value.addEventListener("error", () => {
-        console.error("Unable to load audio file");
-    });
-
-}
-
 function resetToast() {
     toastObj.value.open = false;
     toastObj.value.images = "";
@@ -269,8 +222,8 @@ function restartScreen() {
 
 provide<HomeEvent>("homeEvent", {
     restartScreen,
-    autoAdjustment,
-    speakerSelfTest
+    autoAdjustment
+    
 });
 
 

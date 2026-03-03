@@ -6,7 +6,6 @@
     </Transition>
 
     <monitorStatus v-if="showMonitorStatus" v-model:show="menuStateResult.monitorStatus.show"
-        v-model:position="(menuStateResult.monitorStatus.nodes.result as string)"
         :showMonitorStatus="showMonitorStatus">
     </monitorStatus>
 

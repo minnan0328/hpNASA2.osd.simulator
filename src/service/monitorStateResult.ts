@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import type { Nodes } from '@/types';
 import { useStore } from '@/stores/index';
-import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
+import { OnNodes, MediumNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
@@ -9,9 +9,6 @@ import screenHigh from '@/assets/images/screen-high.jpg';
 
 const store = useStore();
 const OnNodesEnum = new OnNodes();
-const OffNodesEnum = new OffNodes();
-const TopNodesEnum = new TopNodes();
-const BottomNodesEnum = new BottomNodes();
 const LowNodesEnum = new LowNodes();
 const MediumNodesEnum = new MediumNodes();
 const HighNodesEnum = new HighNodes();
@@ -119,9 +116,9 @@ export const menuStateResult = computed(() => {
         // 取得螢幕狀態
         monitorStatus: {
             // 取得是否顯示螢幕狀態視窗
-            show: menu.value.nodes[4].nodes![3].result != OffNodesEnum.result ? true : false,
+            show: menu.value.nodes[4].result.includes(menu.value.nodes[4].nodes![3].result as string),
             // 取得螢幕狀態
-            nodes: menu.value.nodes[4].nodes![3]
+            nodes: menu.value.nodes[4]
         },
         // 取得輸入端
         input: input.value,

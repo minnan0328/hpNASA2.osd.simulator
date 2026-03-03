@@ -6,12 +6,10 @@ import { DefaultNodes } from '@/models/class/_utilities';
 import BrightnessNodes from '@/models/class/brightness/_brightness-nodes';
 import ColorNodes from '@/models/class/color/color';
 import AutoAdjustmentNodes from '@/models/class/image/_auto-adjustment-nodes';
-import volumeNodes from '@/models/class/input/audio/_volume-nodes';
 
 const BrightnessNodesEnum = new BrightnessNodes();
 const ColorNodesEnum = new ColorNodes();
 const AutoAdjustmentNodesEnum = new AutoAdjustmentNodes();
-const volumeNodesEnum = new volumeNodes();
 
 export class AssignAutoAdjustmentNodes extends DefaultNodes implements Nodes {
     key = "AssignAuto-Adjustment";
