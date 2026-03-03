@@ -72,8 +72,8 @@ export const monitorScreenResult = computed(() => {
 // 選單狀態設定
 export const menuStateResult = computed(() => {
     // 選單 100% 時的 x 座標 - 預設百分比的 x 座標 - 8
-    const maxDecrease = 76;
-    const increaseThreshold = 98;
+    const maxDecrease = 19;
+    const increaseThreshold = 86;
     const decreaseThreshold = 100;
     // 計算遞增係數
     const increase = maxDecrease / increaseThreshold;

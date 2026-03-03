@@ -34,8 +34,8 @@ export default class MenuPositionNodes extends DefaultNodes implements Nodes {
             // Range (0~100)
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "Horizontal",
-            selected: 98,
-            result: 98,
+            selected: 86,
+            result: 86,
             parents: this.key,
             mode: ModeType.horizontalRange,
             rangeMin: 0,
