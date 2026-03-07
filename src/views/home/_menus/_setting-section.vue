@@ -96,7 +96,7 @@
 
                         <!-- 設定狀態 -->
                         <div class="item state-item" v-if="thirdNodes.displayState">
-                            <span class="state" >state：{{toDisplayValueLanguageText(thirdNodes)}}</span>
+                            <span class="state" >status：{{toDisplayValueLanguageText(thirdNodes)}}</span>
                         </div>
                         <!-- 設定狀態 -->
 
@@ -118,6 +118,10 @@
                     <p>The “Image Scaling” OSD menu for this product is disabled for all 16:9 aspect ratio resolutions.</p>
                     <br/>
                     <p>But for this OSD training simulation, the menu will remain active for the simulated 1920x1080 resolution.</p>
+                </div>
+
+                <div class="setting-item accessibility" v-if="secondarySectionNodes.key == 'Accessibility'">
+                    <p>Accessibility should only appear for NA region.</p>
                 </div>
 
             </div>

@@ -41,12 +41,17 @@
                                 <img src="@/assets/images/menu-buttons.png" alt="">
                                 <div class="power-light menu-btn" v-if="openMonitor && monitorResult.powerLED"></div>
                             </div>
+
+                            <div class="language-direction" v-if="enabledLanguageDirection">
+                                <p class="direction">The function is for demonstration purposes only. Returning to the previous page will restore to English.</p>
+                            </div>
     
                             <menus v-model:openMonitor="openMonitor"
                                 v-model:startUpFinish="startUpFinish"
                                 v-model:showScreen="showScreen"
                                 v-model:showMonitorStatus="showMonitorStatus"
                                 v-model:openToast="toastObj.open"
+                                v-model:enabledLanguageDirection="enabledLanguageDirection"
                                 ref="childMenusComponentRef">
                                 <template v-slot:openMonitor>
                                     <button class="controller-btn open-btn" @click="handleMonitor"></button>
@@ -119,6 +124,7 @@ const showMonitorStatus = ref(false);
 const showScreen = ref(false);
 const startUpFinish = ref(false);
 const childMenusComponentRef = ref(null);
+const enabledLanguageDirection = ref(false);
 
 function handleMonitor() {
     openMonitor.value = !openMonitor.value;
@@ -327,6 +333,19 @@ provide<HomeEvent>("homeEvent", {
                 bottom: 16px;
                 right: 32px;
 
+            }
+        }
+
+        .language-direction {
+            width: 260px;
+            height: max-content;
+            position: absolute;
+            bottom: -210px;
+            right: -4px;
+            line-height: 1.33;
+            
+            .direction{
+                color: $text-red;
             }
         }
     }

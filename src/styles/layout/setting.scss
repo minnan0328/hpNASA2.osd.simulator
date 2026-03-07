@@ -148,12 +148,17 @@
         }
     }
 
-    .image-scaling {
+    .image-scaling,
+    .accessibility {
         display: block;
         font-size: 10px;
         line-height: 1.22;
         color: #f3d139;
         margin: 48px 24px;
+    }
+
+    .accessibility {
+        margin: 98px 24px;
     }
 }
 

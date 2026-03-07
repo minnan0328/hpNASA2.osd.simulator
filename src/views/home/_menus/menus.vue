@@ -142,6 +142,7 @@ import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change
 
 import { DefaultNodes, BackNodes, ResetNodes, ExitNodes, OnNodes, OffNodes, YesNodes, NoNodes } from '@/models/class/_utilities';
 import { BrightnessDefaultValueEnum, setBrightnessDefaultValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
+import LanguageNodes from '@/models/class/menu/_language-nodes';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -153,6 +154,7 @@ const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const YesNodesEnum = new YesNodes();
 const NoNodesEnum = new NoNodes();
+const LanguageNodesEnum = new LanguageNodes();
 
 const AssignAutoAdjustmentNodesEnum = new AssignAutoAdjustmentNodes();
 const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
@@ -172,10 +174,11 @@ const props = defineProps({
     startUpFinish: { type: Boolean, default: false },
     showScreen: { type: Boolean, default: false },
     showMonitorStatus: { type: Boolean, default: false },
-    openToast: { type: Boolean, default: false }
+    openToast: { type: Boolean, default: false },
+    enabledLanguageDirection: { type: Boolean, default: false }
 });
 
-const emit = defineEmits(['update:showScreen', 'update:showMonitorStatus', 'update:startUpFinish']);
+const emit = defineEmits(['update:showScreen', 'update:showMonitorStatus', 'update:startUpFinish', 'update:enabledLanguageDirection']);
 
 const menuTimeOutIntervalId = ref<number | null>(null);
 
@@ -615,6 +618,10 @@ function handlerNextPanel() {
                 // 當為診斷模式時
                 if(menuState.thirdPanel.parents == "DiagnosticPatterns") {
                     store.$state.isDiagnosticPatterns = true;
+                }
+
+                if(menuState.thirdPanel.parents == LanguageNodesEnum.key) {
+                    emit("update:enabledLanguageDirection", true);
                 }
             });
         } else if(menuState.secondPanel!.nodes && menuState.thirdPanel && menuState.thirdPanel.nodes && !menuState.fourthPanel) {
@@ -1320,6 +1327,7 @@ function returnToDefaultValue() {
     store.$state.menu.nodes[0].selected = "English";
     store.$state.menu.nodes[0].result = "English";
     store.$state.menu.nodes[0].page = 1;
+    emit("update:enabledLanguageDirection", false);
 
     //取消無障礙模式
     store.$state.management.nodes[3].selected = OffNodesEnum.selected;
