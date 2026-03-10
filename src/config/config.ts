@@ -1,6 +1,6 @@
 const config = {
     company: "HP",
-    screenModel: "322fs, 324fs, G2/327fs",
+    screenModel: "322fs G2 / 324fs G2 / 327fs G2",
     
 }
 
