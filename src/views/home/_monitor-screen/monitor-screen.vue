@@ -5,7 +5,7 @@
         </div>
     </Transition>
 
-    <monitorStatus v-if="showMonitorStatus" v-model:show="menuStateResult.monitorStatus.show"
+    <monitorStatus 
         :showMonitorStatus="showMonitorStatus">
     </monitorStatus>
 

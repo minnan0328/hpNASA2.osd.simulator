@@ -872,7 +872,6 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
         if (
             !isEnableNode(node.nodes[index]) || node.nodes[index].disabled
             // 暫時先寫死跳過
-            || openAllMenu.value && node.nodes[index].key == "AudioFollowsVideo" && node.nodes[index].mode == ModeType.info
             || openAllMenu.value && node.nodes[index].key == ExitNodesEnum.key && node.nodes[index].mode != ModeType.exit
             || openAssignButton.value && node.nodes[index].key == ResetNodesEnum.key
             || openAssignButton.value && node.nodes[index].key == BackNodesEnum.key
@@ -1034,7 +1033,10 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         // 返回上一步
         [BackNodesEnum.key]: () => handlePrevious(),
         // 恢復當前 menu 預設值
-        [ResetNodesEnum.key]: () => handleResetAction(previousNodes),
+        [ResetNodesEnum.key]: () => {
+            handleResetAction(previousNodes);
+            handlerNavigation("down");
+        },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         NextPageButtons: () => handlerNavigation("down"),
         PreviousPageButtons: () => handlerNavigation("up"),
@@ -1080,10 +1082,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         previousNodes.result = previousNodes.selected;
     } else {
         if(nodes.mode != ModeType.horizontalRange && previousNodes.nodes!.length > 0) {
-            if(previousNodes.key == "Audio" && nodes.mode == ModeType.radio) {
-                previousNodes.nodes![1].selected = nodes.selected;
-                previousNodes.nodes![1].result = nodes.result;
-            } else if(previousNodes.key == "CustomRGB") {
+            if(previousNodes.key == "CustomRGB") {
                 menuState.menuPanel!.selected = previousNodes.selected;
                 menuState.menuPanel!.selected  = previousNodes.result;
             } else {

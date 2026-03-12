@@ -116,7 +116,7 @@ const Inactive = ref({
         gap: 0 16px;
 
         &.input {
-            margin-bottom: 14px;
+            margin-bottom: 8px;
 
             .action {
                 color: $grey-blue;
@@ -124,7 +124,7 @@ const Inactive = ref({
         }
 
         &.setting {
-            margin-bottom: 24px;
+            margin-bottom: 8px;
         }
     }
 }

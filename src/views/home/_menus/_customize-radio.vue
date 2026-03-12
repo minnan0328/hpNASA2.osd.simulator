@@ -71,10 +71,6 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
         border-bottom: 1px solid $black-1E;
     }
 
-    &.AudioFollowsVideo {
-        padding-left: 20px;
-    }
-
     .round {
         position: relative;
         width: 10px;
