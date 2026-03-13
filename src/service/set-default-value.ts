@@ -20,8 +20,6 @@ export function setBrightnessDefaultValue() {
     store.$state.brightnessPlus.nodes[0].selected = colorResult.brightness;
     store.$state.brightnessPlus.nodes[0].nodes[0].selected = colorResult.brightness;
     
-    store.$state.color.nodes[6].brightness = colorResult.brightness;
-    
     // 當 color 是 HP Enhance+ 時 brightness 的 dynamic contrast 為 disable 並且關閉
     if(store.$state.color.result == HPEnhancePlusNodesEnum.result) {
         // 動態對比設定 Dynamic Contrast

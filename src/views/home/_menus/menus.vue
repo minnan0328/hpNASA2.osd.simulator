@@ -1003,9 +1003,6 @@ function handlerRangeValue(step: string) {
             if(previousNodes.key == BrightnessNodesEnum.key) {
                 const colorResult = menus.value.nodes[1]!.nodes.find(n => n.result === menus.value.nodes[1]!.result);
                 colorResult.brightness = nodes.result as number;
-
-                // 當亮度調整時候，設定 RGＢ 的 brightness 屬性，讓它能夠跟著亮度調整而改變
-                store.$state.color.nodes[6].brightness = nodes.result as number;
             }
 
             // 當調整亮度與對比時候，關閉動態對比
