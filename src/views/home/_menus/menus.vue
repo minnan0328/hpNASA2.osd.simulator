@@ -105,7 +105,7 @@ import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toLowerCaseFirstChar } from '@/service/service';
-import { menuStateResult } from '@/service/monitorStateResult';
+import { menuStateResult } from '@/service/monitor-state-result';
 
 import config from '@/config/config';
 
@@ -132,19 +132,56 @@ import iconPrevious from '@/assets/icons/icon-previous.svg';
 import iconInformation from '@/assets/icons/icon-information.svg';
 import iconAutoAdjustment from '@/assets/icons/icon-auto-adjustment.svg';
 
+import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
+
+import BrightnessNodes from '@/models/class/brightness/_brightness-nodes';
+import ContrastNodes from '@/models/class/brightness/_contrast-nodes';
+import VideoLevelNodes from '@/models/class/brightness/_video-level-nodes';
+
+import ColorNodes from '@/models/class/color/color';
+import CustomRGBNodes from '@/models/class/color/_custom-RGB-nodes';
+
+import MenuPositionNodes from '@/models/class/menu/_menu-position-nodes';
+import LanguageNodes from '@/models/class/menu/_language-nodes';
+
+import FactoryResetNodes from '@/models/class/management/_factory-reset-nodes';
+import AccessibilityNodes from '@/models/class/management/_accessibility-nodes';
+
+import InputNodes from '@/models/class/input/input';
+
+import AutoAdjustmentNodes from '@/models/class/image/_auto-adjustment-nodes';
+
 import { 
     AssignAutoAdjustmentNodes, AssignBrightnessNodes,
     AssignColorNodes, AssignDisplayInformationNodes,
     AssignNextActiveInputNodes, AssignEmptyNodes
 } from '@/models/class/menu/assign-buttons/_utilities';
 
-import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
-
-import { DefaultNodes, BackNodes, ResetNodes, ExitNodes, OnNodes, OffNodes, YesNodes, NoNodes } from '@/models/class/_utilities';
-import { BrightnessDefaultValueEnum, setBrightnessDefaultValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
-import LanguageNodes from '@/models/class/menu/_language-nodes';
-
+import {
+    DefaultNodes, BackNodes, ResetNodes, ExitNodes,
+    OnNodes, OffNodes, YesNodes, NoNodes,
+    NextPageButtonsNodes, PreviousPageButtonsNodes
+} from '@/models/class/_utilities';
+import { setBrightnessDefaultValue, setDynamicContrastValue } from '@/service/set-default-value';
 const MenusDefaultEnum = new MenusDefaultModel();
+
+const BrightnessNodesEnum = new BrightnessNodes();
+const ContrastNodesEnum = new ContrastNodes();
+const VideoLevelNodesEnum = new VideoLevelNodes();
+
+const ColorNodesEnum = new ColorNodes();
+const CustomRGBNodesEnum = new CustomRGBNodes();
+
+const MenuPositionNodesEnum = new MenuPositionNodes();
+const LanguageNodesEnum = new LanguageNodes();
+
+const FactoryResetNodesEnum = new FactoryResetNodes();
+const AccessibilityNodesEnum = new AccessibilityNodes();
+
+const InputNodesEnum = new InputNodes();
+
+const AutoAdjustmentNodesEnum = new AutoAdjustmentNodes();
+
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
@@ -154,7 +191,8 @@ const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const YesNodesEnum = new YesNodes();
 const NoNodesEnum = new NoNodes();
-const LanguageNodesEnum = new LanguageNodes();
+const NextPageButtonsNodesEnum = new NextPageButtonsNodes();
+const PreviousPageButtonsNodesEnum = new PreviousPageButtonsNodes();
 
 const AssignAutoAdjustmentNodesEnum = new AssignAutoAdjustmentNodes();
 const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
@@ -768,11 +806,15 @@ function handlerNavigation(direction: 'up' | 'down') {
     
                             if(menuState.secondPanel.mode == ModeType.button || menuState.secondPanel.mode == ModeType.radio) {
                                 // 目前只有 button 及 radio 類型才需要，如有其他類型在進行判斷
-    
+                                
                                 // 預覽所選擇顏色亮度
-                                if(menuState.secondPanel.parents == "Color") {
-                                    if(menuState.secondPanel.key != BackNodesEnum.key || menuState.secondPanel.key != ResetNodesEnum.key || menuState.secondPanel.key != ExitNodesEnum.key) {
-                                        menus.value.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[menuState.secondPanel.result as string];
+                                if(menuState.secondPanel!.parents == ColorNodesEnum.key) {
+                                    if(
+                                        menuState.secondPanel!.key != BackNodesEnum.key 
+                                        && menuState.secondPanel!.key != ResetNodesEnum.key
+                                        && menuState.secondPanel!.key != ExitNodesEnum.key
+                                    ) {
+                                        menus.value.nodes[0]!.nodes![0].result = menuState.secondPanel.brightness as number;
                                     }
                                 }
                                 
@@ -784,8 +826,9 @@ function handlerNavigation(direction: 'up' | 'down') {
                             || menuState.temporaryStorage && menuState.secondPanel.mode == ModeType.button && menuState.secondPanel.key == BackNodesEnum.key
                         ) {
                             menuState.menuPanel.result = menuState.temporaryStorage.result;
-                            menus.value.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[menuState.menuPanel.result as string];
+                            menus.value.nodes[0]!.nodes![0].result = [menuState.menuPanel.result as string];
                             menuState.temporaryStorage = null;
+                            setBrightnessDefaultValue();
                         }
                     }
                 });
@@ -952,17 +995,26 @@ function handlerRangeValue(step: string) {
                 (nodes.result as number) += 1;
             }
 
-            if(previousNodes.key != "CustomRGB" && nodes.mode != ModeType.horizontalRange) {
+            if(previousNodes.key != CustomRGBNodesEnum.key && nodes.mode != ModeType.horizontalRange) {
                 previousNodes.selected = nodes.selected;
                 previousNodes.result = nodes.result;
             }
 
-            if(previousNodes.key == "Brightness" || previousNodes.key == "Contrast") {
-                menus.value.nodes[0].nodes[2].result = OffNodesEnum.result;
-                menus.value.nodes[0].nodes[2].selected = OffNodesEnum.selected;
+            if(previousNodes.key == BrightnessNodesEnum.key) {
+                const colorResult = menus.value.nodes[1]!.nodes.find(n => n.result === menus.value.nodes[1]!.result);
+                colorResult.brightness = nodes.result as number;
+
+                // 當亮度調整時候，設定 RGＢ 的 brightness 屬性，讓它能夠跟著亮度調整而改變
+                store.$state.color.nodes[6].brightness = nodes.result as number;
             }
 
-            if(previousNodes.key == "MenuPosition") {
+            // 當調整亮度與對比時候，關閉動態對比
+            if(previousNodes.key == BrightnessNodesEnum.key || previousNodes.key == ContrastNodesEnum.key) {
+                setDynamicContrastValue();
+            }
+
+            // 特例處理 MenuPosition 的顯示值
+            if(previousNodes.key == MenuPositionNodesEnum.key) {
                 let menuPositionText = `H=${previousNodes.nodes![0].result}, V=${previousNodes.nodes![1].result}`;
                 previousNodes.selected = menuPositionText;
                 previousNodes.result = menuPositionText;
@@ -1038,20 +1090,20 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
             handlerNavigation("down");
         },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
-        NextPageButtons: () => handlerNavigation("down"),
-        PreviousPageButtons: () => handlerNavigation("up"),
+        [NextPageButtonsNodesEnum.key]: () => handlerNavigation("down"),
+        [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up"),
         // 自動調整
-        AutoAdjustment: () => {
+        [AutoAdjustmentNodesEnum.key]: () => {
             handlerClose();
             homeEvent.autoAdjustment();
         }
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
-        FactoryReset: () => handleFactoryResetAction(nodes, previousNodes),
         // 處理 Confirm 動作
-        ChangingMessage: () => handleChangingMessageAction(nodes)
-    };
+        ChangingMessage: () => handleChangingMessageAction(nodes),
+        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes, previousNodes)
+    }
 
     // 當為 previousNodes.key 時，執行動作
     if (previousNodes.key in previousNodesActions) {
@@ -1082,7 +1134,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         previousNodes.result = previousNodes.selected;
     } else {
         if(nodes.mode != ModeType.horizontalRange && previousNodes.nodes!.length > 0) {
-            if(previousNodes.key == "CustomRGB") {
+            if(previousNodes.key == CustomRGBNodesEnum.key) {
                 menuState.menuPanel!.selected = previousNodes.selected;
                 menuState.menuPanel!.selected  = previousNodes.result;
             } else {
@@ -1110,14 +1162,14 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         }
 
         const keyHandlers: { [key: string]: () => void } = {
-            Language: () => reopenMenu(),
-            Input: () => {
+            [LanguageNodesEnum.key]: () => reopenMenu(),
+            [InputNodesEnum.key]: () => {
                 homeEvent.restartScreen();
                 handlerClose();
             },
-            Color: () => setBrightnessDefaultValue(),
-            VideoLevel: () => restartScreenPreview(),
-            Accessibility: () => {
+            [ColorNodesEnum.key]: () => setBrightnessDefaultValue(),
+            [VideoLevelNodesEnum.key]: () => restartScreenPreview(),
+            [AccessibilityNodesEnum.key]: () => {
                 store.$state.menu.nodes[0].disabled = previousNodes.result == OnNodesEnum.result;
                 store.$state.menu.nodes[1].disabled = previousNodes.result == OnNodesEnum.result;
 

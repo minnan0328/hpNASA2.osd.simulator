@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 import type { Nodes } from '@/types/index';
-import { toLanguageText } from '@/service/toDisplayLanguageText';
+import { toLanguageText } from '@/service/to-display-language-text';
 
 const props = defineProps({
     mainSectionNodes: {

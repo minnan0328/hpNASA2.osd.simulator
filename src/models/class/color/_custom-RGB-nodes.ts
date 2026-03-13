@@ -10,6 +10,7 @@ export default class CustomRGBNodes extends DefaultNodes implements Nodes {
     key = "CustomRGB";
     selected = "Custom RGB";
     result = "Custom RGB";
+    brightness = 100;
     livePreview = true;
     size = 3;
     page = 1;

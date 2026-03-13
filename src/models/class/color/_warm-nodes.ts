@@ -7,6 +7,7 @@ export default class WarmNodes extends DefaultNodes implements Nodes {
     key = "Warm";
     selected = "Warm";
     result = "Warm";
+    brightness = 26; // 預設亮度值
     livePreview = true;
     mode = ModeType.radio;
     language = {

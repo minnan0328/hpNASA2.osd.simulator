@@ -5,7 +5,7 @@
         </div>
     </Transition>
 
-    <monitorStatus 
+    <monitorStatus v-if="showMonitorStatus" v-model:show="menuStateResult.monitorStatus.show"
         :showMonitorStatus="showMonitorStatus">
     </monitorStatus>
 
@@ -20,7 +20,7 @@
 import { onMounted } from 'vue';
 import { useStore } from '@/stores/index';
 import monitorStatus from '@/views/home/_monitor-status/monitor-status.vue';
-import { menuStateResult, monitorScreenResult } from '@/service/monitorStateResult';
+import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
 
 const store = useStore();
 

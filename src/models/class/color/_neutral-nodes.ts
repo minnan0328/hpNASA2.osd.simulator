@@ -8,6 +8,7 @@ export default class NeutralNodes extends DefaultNodes implements Nodes {
     key = "Neutral";
     selected = "Neutral";
     result = "Neutral";
+    brightness = 86; // 預設亮度值
     livePreview = true;
     mode = ModeType.radio;
     language = {

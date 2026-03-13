@@ -33,7 +33,7 @@
 import { ref } from 'vue';
 import { toLanguageText } from '@/service/service';
 import { ModeType } from '@/types';
-import { menuStateResult } from '@/service/monitorStateResult';
+import { menuStateResult } from '@/service/monitor-state-result';
 
 const props = defineProps({
     show: {

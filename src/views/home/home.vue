@@ -72,7 +72,7 @@ import type { Nodes, HomeEvent, Language } from '@/types';
 import ribbon from '@/views/home/_ribbon/ribbon.vue';
 import monitorScreen from '@/views/home/_monitor-screen/monitor-screen.vue';
 import menus from '@/views/home/_menus/menus.vue';
-import { monitorResult } from '@/service/monitorStateResult';
+import { monitorResult } from '@/service/monitor-state-result';
 import config from '@/config/config';
 import toast from '@/views/home/_toast/toast.vue';
 

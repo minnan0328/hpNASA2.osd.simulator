@@ -1,6 +1,6 @@
 import { useStore } from '@/stores/index';
 import type { Nodes } from '@/types';
-import { toLanguageText, toDisplayValueLanguageText } from './toDisplayLanguageText';
+import { toLanguageText, toDisplayValueLanguageText } from './to-display-language-text';
 const store = useStore();
 
 export function isEnableNode(nodes: Nodes): boolean {

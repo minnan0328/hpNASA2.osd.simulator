@@ -4,21 +4,23 @@ import { ModeType } from "@/types";
 
 export class DefaultNodes implements Nodes {
     key = "";
-    selected!: number | string | string[] | boolean | null;
-    result!: number | string | string[] | boolean | null;
-    assignDisplay = true;
-    disabled = false;
-    displayValue = false;
-    displayState = false;
-    livePreview = false;
+    selected!: number | string | string[] | boolean | object | null;
+    result!: number | string | string[] | boolean | object | null;
+    brightness = 100; // 亮度
+    assignDisplay = false; 
+    disabled = false; // 是否禁用該選項
+    displayValue = false; // 顯示選擇的結果在下一層 menu 上面
+    displayState = false; // 顯示選擇的結果在該層 menu 上面
+    livePreview = false; // 是否即時預覽
     size = 0;
     page = 1;
     parents = null;
     mode = ModeType.button;
     rangeMin = 0;
     rangeMax = 0;
+    step = 1;
     horizontalRangeFocus = false;
-    rangeMaxIcon = null;
+    rangeMaxIcon = null
     rangeMinIcon = null;
     only = ["DisplayPort", "HDMI", "VGA"];
     mergeGrid = false;

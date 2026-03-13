@@ -13,6 +13,7 @@ export default class HPEnhancePlusNode extends DefaultNodes implements Nodes {
     key = "HPEnhancePlus";
     selected = 'HPEnhancePlus' + MediumNodesEnum.selected;
     result = 'HPEnhancePlus' + MediumNodesEnum.result;
+    brightness = 86; // 預設亮度值
     displayValue = true;
     livePreview = true;
     size = 4;

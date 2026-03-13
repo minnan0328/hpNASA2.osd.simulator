@@ -28,8 +28,9 @@ export interface Language {
 // interface
 export interface Nodes {
     key: string;
-    selected: number | string | string[] | boolean | null;
-    result: number | string | string[] | boolean | null;
+    selected: number | string | string[] | boolean | object | null;
+    result: number | string | string[] | boolean | object | null;
+    brightness: number | null;
     assignDisplay: Boolean;
     disabled: Boolean;
     displayValue: boolean;

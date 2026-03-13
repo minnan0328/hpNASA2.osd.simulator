@@ -8,6 +8,7 @@ export default class CoolNodes extends DefaultNodes implements Nodes {
     key = "Cool";
     selected = "Cool";
     result = "Cool";
+    brightness = 76; // 預設亮度值
     livePreview = true;
     mode = ModeType.radio;
     language = {
