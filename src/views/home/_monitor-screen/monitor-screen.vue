@@ -104,7 +104,7 @@ onMounted(() => {
     &.FilltoAspectRatio {
         max-width: 682px;
         height: $screen-height;
-        margin: 0 #{($screen-width - 682px) / 2};
+        margin: 0 calc((#{$screen-width} - 682px) / 2);
 
         &::before {
             width: 682px;

@@ -20,7 +20,12 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
 			}
 		},
 		css: {
-			devSourcemap: isDev
+			devSourcemap: isDev,
+			preprocessorOptions: {
+				scss: {
+					api: "modern-compiler" // or 'modern'
+				}
+			}
 		},
 		build: {
 			assetsInlineLimit: 10000,
