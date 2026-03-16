@@ -35,9 +35,9 @@ export const monitorScreenResult = computed(() => {
             monitorHeight: `${monitorHeight}px`
         }, 
         // 取得亮度值 Brightness
-        brightness: `${brightness.value.nodes[0].result}%`,
+        brightness: brightness.value.nodes[0].result == 100 ? (brightness.value.nodes[0].result / 100) : (((brightness.value.nodes[0].result / 2 ) + 30) / 100),
         // 取得對比值 Contrast
-        contrast: `${brightness.value.nodes[1].result}%`,
+        contrast: brightness.value.nodes[1].result == 100 ? (1 - (brightness.value.nodes[1].result / 100)) : (((brightness.value.nodes[1].result / 2 ) + 30) / 100),
         RGB: toImageColor.value,
         // 取得黑色延展 Black Stretch 對應亮度圖片
         blackStretchImage: getBlackStretchImage.value,

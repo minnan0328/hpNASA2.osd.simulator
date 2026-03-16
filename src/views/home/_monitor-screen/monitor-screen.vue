@@ -111,6 +111,17 @@ onMounted(() => {
             height: $screen-height;
         }
     }
+    &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        background-color: $black;
+        width: $screen-width;
+        height: $screen-height;
+        opacity: v-bind("monitorScreenResult.contrast");
+        z-index: 1;
+    }
 
     img {
         width: v-bind("monitorScreenResult.imageClockPhase.width");
@@ -121,7 +132,6 @@ onMounted(() => {
         filter: 
             hue-rotate(v-bind("monitorScreenResult.RGB"))
             brightness(v-bind("monitorScreenResult.brightness"))
-            contrast(v-bind("monitorScreenResult.contrast"))
             blur(v-bind("monitorScreenResult.sharpness"));
     }
 
