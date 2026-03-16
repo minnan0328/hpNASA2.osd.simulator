@@ -208,7 +208,7 @@ function restartScreen() {
             // 暫時使用 any 解決
             (childMenusComponentRef.value as any).handlerClose();
         };
-        
+
         setTimeout(() => {
             showScreen.value = true;
             showMonitorStatus.value = true;

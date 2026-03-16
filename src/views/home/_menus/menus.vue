@@ -354,15 +354,20 @@ watch(() => props.openMonitor, (newVal, oldVal) => {
 
 // 開啟控制選單
 function handlerControllerMenus() {
-    if(props.openMonitor && props.showMonitorStatus && props.startUpFinish == false && !props.openToast) {
+    // 當螢幕開啟時
+    if (!props.openMonitor) return;
+
+    // 若顯示螢幕狀態、尚未完成啟動且未開啟 toast，直接跳過顯示螢幕狀態進入選單
+    if (props.showMonitorStatus && !props.startUpFinish && !props.openToast) {
         emit("update:showMonitorStatus", false);
         emit("update:startUpFinish", true);
     }
 
-    if(props.openMonitor && props.startUpFinish) {
+    // 已完成啟動或剛剛設為完成啟動時，開啟控制選單
+    if (props.startUpFinish || (!props.startUpFinish && props.showMonitorStatus && !props.openToast)) {
         openControllerMenus.value = true;
-    };
-};
+    }
+}
 
 // 開啟主要選單
 function handlerOpenAllMenu() {

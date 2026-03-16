@@ -2,12 +2,10 @@
 
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes, TopNodes } from '../../_utilities';
-import MonitorStatusNodes from './_monitor-status-nodes';
+import { DefaultNodes, BackNodes } from '../../_utilities';
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
-const TopNodesEnum = new TopNodes();
 export default class OSDMessagesNodes extends DefaultNodes implements Nodes {
     key = "OSDMessages";
     selected = ["Power-On Logo", "No Input Signal Warning", "Monitor Status"];
@@ -19,7 +17,7 @@ export default class OSDMessagesNodes extends DefaultNodes implements Nodes {
         German: "OSD-Nachrichten",
         SimplifiedChinese: "OSD 消息",
         TraditionalChinese: "OSD 訊息",
-        English: "OSD Messages",
+        English: "Monitor Status",
         Español: "Mensajes OSD",
         French: "Messages OSD",
         Italian: "Messaggi OSD",

@@ -7,7 +7,7 @@ export class DefaultNodes implements Nodes {
     selected!: number | string | string[] | boolean | object | null;
     result!: number | string | string[] | boolean | object | null;
     brightness = 100; // 亮度
-    assignDisplay = false; 
+    assignDisplay = true; 
     disabled = false; // 是否禁用該選項
     displayValue = false; // 顯示選擇的結果在下一層 menu 上面
     displayState = false; // 顯示選擇的結果在該層 menu 上面

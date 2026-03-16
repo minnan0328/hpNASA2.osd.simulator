@@ -5,9 +5,7 @@
         </div>
     </Transition>
 
-    <monitorStatus v-if="showMonitorStatus" v-model:show="menuStateResult.monitorStatus.show"
-        :showMonitorStatus="showMonitorStatus">
-    </monitorStatus>
+    <monitorStatus v-if="showMonitorStatus && menuStateResult.monitorStatus.show"></monitorStatus>
 
     <div :class="['screen', monitorScreenResult.imageScaling]" v-if="showScreen && !monitorScreenResult.diagnosticPatterns.start">
         <img :src="monitorScreenResult.blackStretchImage" alt="">
@@ -48,6 +46,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:screenInitial', 'update:showMonitorStatus', 'update:showScreen', 'update:startUpFinish']);
+
 
 function handleScreen() {
     setTimeout(() => {
@@ -105,7 +104,7 @@ onMounted(() => {
     &.FilltoAspectRatio {
         max-width: 682px;
         height: $screen-height;
-        margin: 0 50px;
+        margin: 0 #{($screen-width - 682px) / 2};
 
         &::before {
             width: 682px;

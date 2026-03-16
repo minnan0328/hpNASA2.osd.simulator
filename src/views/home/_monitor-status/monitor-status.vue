@@ -1,5 +1,5 @@
 <template>
-    <div :class="['monitor-status', 'top']" v-show="show">
+    <div :class="['monitor-status', 'top']">
         <div class="monitor-status-title">{{ toLanguageText(menuStateResult.monitorStatus.nodes.language!) }}</div>
         <div class="monitor-status-info input">
             <template v-for="currentInput in menuStateResult.input.nodes">
@@ -34,13 +34,6 @@ import { ref } from 'vue';
 import { toLanguageText } from '@/service/service';
 import { ModeType } from '@/types';
 import { menuStateResult } from '@/service/monitor-state-result';
-
-const props = defineProps({
-    show: {
-        type: Boolean,
-        default: true
-    }
-});
 
 const Active = ref({
     language: {
