@@ -152,7 +152,7 @@ export const monitorResult = computed(() => {
         autoSleepMode: power.value.nodes[0].result == OnNodesEnum.result ? true : false,
         // 取得重新開機設定
         powerOnRecall: power.value.nodes[1].result == OnNodesEnum.result ? true : false,
-        // 取得店員指示燈設定
+        // 取得電源指示燈設定
         powerLED: power.value.nodes[2].result == OnNodesEnum.result ? true : false,
     }
 });

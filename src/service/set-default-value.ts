@@ -32,3 +32,13 @@ export function setDynamicContrastValue() {
     store.$state.brightnessPlus.nodes[2].result = OffNodesEnum.result;
     store.$state.brightnessPlus.nodes[2].selected = OffNodesEnum.selected;
 }
+
+export function setColorBrightnessDefaultValue() {
+    const brightness = store.$state.brightnessPlus.nodes[0];
+    const colorIndex = store.$state.color.nodes.findIndex(n => n.result == store.$state.color.result);
+    
+    if(colorIndex !== -1) {
+
+        store.$state.color.nodes[colorIndex].brightness = brightness.result;
+    }
+}

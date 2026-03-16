@@ -133,7 +133,9 @@ import iconInformation from '@/assets/icons/icon-information.svg';
 import iconAutoAdjustment from '@/assets/icons/icon-auto-adjustment.svg';
 
 import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
+import AutoSleepModeNodes from '@/models/class/power/_auto-sleep-mode-nodes';
 
+import BrightnessPlusNodes from '@/models/class/brightness/brightness';
 import BrightnessNodes from '@/models/class/brightness/_brightness-nodes';
 import ContrastNodes from '@/models/class/brightness/_contrast-nodes';
 import VideoLevelNodes from '@/models/class/brightness/_video-level-nodes';
@@ -162,9 +164,10 @@ import {
     OnNodes, OffNodes, YesNodes, NoNodes,
     NextPageButtonsNodes, PreviousPageButtonsNodes
 } from '@/models/class/_utilities';
-import { setBrightnessDefaultValue, setDynamicContrastValue } from '@/service/set-default-value';
+import { setBrightnessDefaultValue, setDynamicContrastValue, setColorBrightnessDefaultValue } from '@/service/set-default-value';
 const MenusDefaultEnum = new MenusDefaultModel();
 
+const BrightnessPlusNodesEnum = new BrightnessPlusNodes();
 const BrightnessNodesEnum = new BrightnessNodes();
 const ContrastNodesEnum = new ContrastNodes();
 const VideoLevelNodesEnum = new VideoLevelNodes();
@@ -181,7 +184,6 @@ const AccessibilityNodesEnum = new AccessibilityNodes();
 const InputNodesEnum = new InputNodes();
 
 const AutoAdjustmentNodesEnum = new AutoAdjustmentNodes();
-
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
@@ -202,6 +204,7 @@ const AssignNextActiveInputNodesEnum = new AssignNextActiveInputNodes();
 const AssignEmptyNodesEnum = new AssignEmptyNodes();
 
 const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
+const AutoSleepModeNodesEnum = new AutoSleepModeNodes();
 
 const store = useStore();
 
@@ -1104,7 +1107,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
     const previousNodesActions: { [key: string]: () => void } = {
         // 處理 Confirm 動作
         ChangingMessage: () => handleChangingMessageAction(nodes),
-        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes, previousNodes)
+        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes)
     }
 
     // 當為 previousNodes.key 時，執行動作
@@ -1120,8 +1123,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
     }
 
     // 當是原廠廠設定時，且 OSD Message 是啟用時，顏色與自動休眠的選擇設定結果不一樣時
-    if(isOpenOSDMessage.value && (previousNodes.key == "Color" || previousNodes.key == "AutoSleepMode") && nodes.selected != previousNodes.selected) {
-        factorySettingOSDMessage(nodes, previousNodes);
+    if(isOpenOSDMessage.value && (previousNodes.key == ColorNodesEnum.key || previousNodes.key == AutoSleepModeNodesEnum.key) && nodes.selected != previousNodes.selected) {
+        factorySettingOSDMessage();
         return;
     }
 
@@ -1215,12 +1218,17 @@ function restartScreenPreview() {
 function handleResetAction(previousNodes: Nodes) {
     const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
     store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key])) } });
-
-    if (previousNodes.key === "Color") setBrightnessDefaultValue();
+    
+    if (previousNodes.key === ColorNodesEnum.key) {
+        setBrightnessDefaultValue()
+    };
+    if(previousNodes.key === BrightnessPlusNodesEnum.key) {
+        setColorBrightnessDefaultValue();
+    }
 };
 
 //恢復原廠設定
-function handleFactoryResetAction(nodes: Nodes, previousNodes: Nodes) {
+function handleFactoryResetAction(nodes: Nodes) {
     if (nodes.key == YesNodesEnum.key) {
         factorySettings.value = true;
         store.$resetAll();
@@ -1257,7 +1265,7 @@ function handleChangingMessageAction(nodes: Nodes) {
 };
 
 // 原廠設定電源警告判斷
-function factorySettingOSDMessage(nodes: Nodes, previousNodes: Nodes, ) {
+function factorySettingOSDMessage() {
 
     // 設定 confirm State message
     const setupConfirmState = () => {
