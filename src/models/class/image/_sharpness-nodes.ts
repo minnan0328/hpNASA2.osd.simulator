@@ -184,7 +184,7 @@ export default class SharpnessNodes extends DefaultNodes implements Nodes {
         },
         // 上一步
         {
-            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key,
         }
     ];

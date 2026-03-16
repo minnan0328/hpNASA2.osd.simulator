@@ -14,9 +14,6 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { toLanguageText } from '@/service/service';
-import { useStore } from '@/stores/index';
-
-const store = useStore();
 
 const props = defineProps({
     currentNode: {

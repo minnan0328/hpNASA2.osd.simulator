@@ -343,7 +343,7 @@ const confirmState = reactive({
 });
 
 // 是否開啟OSD Message，當是原廠設定時，且 OSD Message 是啟用時
-const isOpenOSDMessage = computed(() => factorySettings.value && store.$state.menu.nodes[4].result.includes(store.$state.menu.nodes[5].nodes[2].result))
+const isOpenOSDMessage = computed(() => factorySettings.value && menuStateResult.value.OSDMessage.confirmMessage)
 
 // 當關閉螢幕時，關閉所有狀態
 watch(() => props.openMonitor, (newVal, oldVal) => {
