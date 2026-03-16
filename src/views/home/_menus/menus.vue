@@ -164,7 +164,7 @@ import {
     OnNodes, OffNodes, YesNodes, NoNodes,
     NextPageButtonsNodes, PreviousPageButtonsNodes
 } from '@/models/class/_utilities';
-import { setBrightnessDefaultValue, setDynamicContrastValue, setColorBrightnessDefaultValue } from '@/service/set-default-value';
+import { setBrightnessDefaultValue, setDynamicContrastValue, setColorBrightnessDefaultValue, resetColor } from '@/service/set-default-value';
 const MenusDefaultEnum = new MenusDefaultModel();
 
 const BrightnessPlusNodesEnum = new BrightnessPlusNodes();
@@ -823,6 +823,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                                         && menuState.secondPanel!.key != ExitNodesEnum.key
                                     ) {
                                         menus.value.nodes[0]!.nodes![0].result = menuState.secondPanel.brightness as number;
+                                        menus.value.nodes[0]!.nodes![1].result = menuState.secondPanel.contrast as number;
                                     }
                                 }
                                 
@@ -835,6 +836,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                         ) {
                             menuState.menuPanel.result = menuState.temporaryStorage.result;
                             menus.value.nodes[0]!.nodes![0].result = [menuState.menuPanel.result as string];
+                            menus.value.nodes[0]!.nodes![1].result = [menuState.menuPanel.result as string];
                             menuState.temporaryStorage = null;
                             setBrightnessDefaultValue();
                         }
@@ -1011,6 +1013,13 @@ function handlerRangeValue(step: string) {
             if(previousNodes.key == BrightnessNodesEnum.key) {
                 const colorResult = menus.value.nodes[1]!.nodes.find(n => n.result === menus.value.nodes[1]!.result);
                 colorResult.brightness = nodes.result as number;
+                colorResult.brightness = nodes.selected as number;
+            }
+
+            if(previousNodes.key == ContrastNodesEnum.key) {
+                const colorResult = menus.value.nodes[1]!.nodes.find(n => n.result === menus.value.nodes[1]!.result);
+                colorResult.contrast = nodes.result as number;
+                colorResult.contrast = nodes.selected as number;
             }
 
             // 當調整亮度與對比時候，關閉動態對比
@@ -1091,7 +1100,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         [BackNodesEnum.key]: () => handlePrevious(),
         // 恢復當前 menu 預設值
         [ResetNodesEnum.key]: () => {
-            handleResetAction(previousNodes);
+            handleResetAction(previousNodes, nodes);
             handlerNavigation("down");
         },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
@@ -1215,16 +1224,18 @@ function restartScreenPreview() {
 }
 
 // 重置動作
-function handleResetAction(previousNodes: Nodes) {
-    const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
-    store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key])) } });
-    
+function handleResetAction(previousNodes: Nodes, nodes: Nodes) {
     if (previousNodes.key === ColorNodesEnum.key) {
-        setBrightnessDefaultValue()
-    };
-    if(previousNodes.key === BrightnessPlusNodesEnum.key) {
+        resetColor();
+        return;
+
+    } else if(previousNodes.key === BrightnessPlusNodesEnum.key) {
         setColorBrightnessDefaultValue();
-    }
+    } 
+    
+    const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
+    store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key]))}});
+    
 };
 
 //恢復原廠設定

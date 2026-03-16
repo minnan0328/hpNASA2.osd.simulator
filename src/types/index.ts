@@ -31,6 +31,7 @@ export interface Nodes {
     selected: number | string | string[] | boolean | object | null;
     result: number | string | string[] | boolean | object | null;
     brightness: number | null;
+    contrast: number | null;
     assignDisplay: Boolean;
     disabled: Boolean;
     displayValue: boolean;
