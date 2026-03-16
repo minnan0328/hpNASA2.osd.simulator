@@ -1431,7 +1431,7 @@ function handlerMenuTimeout() {
     
             if(menuState.menuPanel && menuState.secondPanel) {
 
-                if(menuState.menuPanel.key == "Color") {
+                if(menuState.menuPanel.key == ColorNodesEnum.key) {
                     menuState.menuPanel.result = menuState.menuPanel.selected;
                     menuState.secondPanel = null;
                     menuState.secondPanelIndex = 0;
