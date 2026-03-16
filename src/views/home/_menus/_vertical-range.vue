@@ -16,12 +16,11 @@
             </div>
 
             <div :class="['range-graduate', { selected: nodes && nodes?.key == currentNode.key, 'merge-grid': isColor }]">
-                <div :class="['graduate', currentNode.key, { max: currentNode.selected == currentNode.rangeMax }]">
-                </div>
+                <div :class="['graduate', currentNode.key, { max: currentNode.selected == currentNode.rangeMax }]"></div>
             </div>
 
             <div class="range-text" v-if="!isColor" >
-                <span v-text="currentNode.selected"></span>
+                <span class="s" v-text="currentNode.selected"></span>
                 <span v-if="currentNode.unit" v-text="toLanguageText(currentNode.unit)"></span>
             </div>
 
@@ -56,7 +55,7 @@ const props = defineProps({
     }
 });
 
-const isColor = computed(() => props.nodes && props.nodes?.key == "CustomRGB")
+const isColor = computed(() => (props.nodes && props.nodes?.parents == "CustomRGB") || (props.currentNode && props.currentNode?.parents == "CustomRGB"));
 
 const currentValue = computed(() => {
     let showValue = convertRange(props.currentNode.selected as number, props.currentNode.rangeMin as number, props.currentNode.rangeMax as number);
