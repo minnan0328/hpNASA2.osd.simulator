@@ -160,14 +160,12 @@ export const monitorResult = computed(() => {
 const toImageColor = computed(() => {
     // 自訂 RGB，RGB 轉換
     const RGB = {
-        r: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[0].result as number : 255,
-        g:(color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[1].result as number : 255,
-        b: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[2].result as number : 255
+        r: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[0].result == 255 ? color.value.nodes[6].nodes[0].result : (color.value.nodes[6].nodes[0].result / 2) + 127.5 as number : 255,
+        g:(color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[1].result == 255 ? color.value.nodes[6].nodes[1].result : (color.value.nodes[6].nodes[1].result / 2) + 127.5 as number : 255,
+        b: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[2].result == 255 ? color.value.nodes[6].nodes[2].result : (color.value.nodes[6].nodes[2].result / 2) + 127.5 as number : 255
     }
 
-    const combinedHue = (RGB.r + RGB.g + RGB.b) / -2.125;
-
-    return `${combinedHue}deg`;
+    return RGB;
 });
 
 // 取得黑色延展 Black Stretch 對應亮度圖片
