@@ -106,8 +106,6 @@ function selectInput(tab: Nodes) {
         store.$state.input.selected = selectedTab.value.selected as string;
         store.$state.input.result = selectedTab.value.result as string;
 
-        store.$state.input.nodes[4].nodes[1].selected = `${store.$state.input.selected} ${store.$state.input.nodes[4].key}`;
-        store.$state.input.nodes[4].nodes[1].result = `${store.$state.input.result} ${store.$state.input.nodes[4].key}`;
         // 選擇 VGA 時更換自訂按鈕項目
         store.setAssignButtonValue();
     }
