@@ -81,17 +81,20 @@
                             :currentNode="thirdNodes"
                             :nodes="thirdSectionNodes"
                             :previousNodes="secondarySectionNodes"
-                            :currentPanelNumber="currentPanelNumber">
+                            :currentPanelNumber="currentPanelNumber"
+                            :bottomLine="false">
                         </buttonItem>
                         
                         <customizeRadio
                             :currentNode="thirdNodes" :nodes="thirdSectionNodes"
-                            :previousNodes="secondarySectionNodes">
+                            :previousNodes="secondarySectionNodes"
+                            :bottomLine="false">
                         </customizeRadio>
                         
                         <customizeCheckbox
                             :currentNode="thirdNodes" :nodes="thirdSectionNodes"
-                            :previousNodes="secondarySectionNodes">
+                            :previousNodes="secondarySectionNodes"
+                            :bottomLine="false">
                         </customizeCheckbox>
 
                         <!-- 設定狀態 -->

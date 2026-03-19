@@ -1,6 +1,7 @@
 <template>
+
     <div class="menu-wrapper">
-        <!-- 全部的選單 -->
+            <!-- 全部的選單 -->
         <div :class="['menus', { 'accessibility': menuStateResult.accessibility }]" v-if="openAllMenu && menuState.menuPanel">
             <div class="header">
                 <p>{{config.company}} {{config.screenModel}}</p>
@@ -62,7 +63,7 @@
         <!-- 原廠設定改變的 conform -->
 
         <!-- 控制選單按鈕 -->
-        <div :class="['controller-menus', { 'accessibility': menuStateResult.accessibility }]" v-if="openControllerMenus">
+        <div :class="['controller-menus', { 'accessibility': menuStateResult.accessibility }]" v-if="openControllerMenus && !enabledDiagnosticPatternsFullScreen">
             <template v-for="currentButton in handleControllerButtonList">
                 <div class="menu-item" v-if="currentButton.image">
                     <img :src="currentButton?.image" alt="">
@@ -148,6 +149,7 @@ import LanguageNodes from '@/models/class/menu/_language-nodes';
 
 import FactoryResetNodes from '@/models/class/management/_factory-reset-nodes';
 import AccessibilityNodes from '@/models/class/management/_accessibility-nodes';
+import DiagnosticPatternsNodes from '@/models/class/management/_diagnostic-patterns-nodes';
 
 import InputNodes from '@/models/class/input/input';
 
@@ -180,6 +182,7 @@ const LanguageNodesEnum = new LanguageNodes();
 
 const FactoryResetNodesEnum = new FactoryResetNodes();
 const AccessibilityNodesEnum = new AccessibilityNodes();
+const DiagnosticPatternsNodesEnum = new DiagnosticPatternsNodes();
 
 const InputNodesEnum = new InputNodes();
 
@@ -227,6 +230,7 @@ const openControllerMenus = ref(false);
 const openAllMenu = ref(false);
 const openAssignButton = ref(false);
 const factorySettings = ref(true);
+const enabledDiagnosticPatternsFullScreen = ref(false);
 
 const menus = computed(() => {
     return {
@@ -422,7 +426,7 @@ function selectedMenuPanel(nodes: Nodes) {
 
 /* 控制選單按鈕組合列表 */
 // 是否啟用選單控制按鈕
-const isControllerMenusButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !confirmState.openConfirm);
+const isControllerMenusButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !enabledDiagnosticPatternsFullScreen.value);
 
 const ControllerTypes: Record<string, ControllerButtonList> = reactive({
     empty: { image: null, event: () => {}, stopEvent: () => {}, type: "Button" },
@@ -445,6 +449,7 @@ const ControllerTypes: Record<string, ControllerButtonList> = reactive({
 });
 
 const confirmButtonList:ControllerButtonList[] = [ ControllerTypes.checkSave, ControllerTypes.arrowLeft, ControllerTypes.arrowRight, ControllerTypes.confirmClose ];
+const diagnosticPatternsButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave, ControllerTypes.checkSave, ControllerTypes.checkSave, ControllerTypes.checkSave ];
 
 const handleControllerButtonList = computed<ControllerButtonList[] | null>(() => {
     if(!props.openMonitor) return[];
@@ -462,6 +467,10 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
     if (openAllMenu.value) {
         return createMenuButtonList();
     }
+
+    if(enabledDiagnosticPatternsFullScreen.value) {
+        return diagnosticPatternsButtonList;
+    }
     
     if(openAssignButton.value && menuState.menuPanel) {
         return handlerModeControllerButtonList(menuState.secondPanel!, menuState.menuPanel);
@@ -470,6 +479,7 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
     if(confirmState.openConfirm && confirmState.confirmMainPanel) {
         return confirmButtonList;
     }
+
 
     return [];
 });
@@ -1089,6 +1099,8 @@ function handlerSave(currentPanelNumber: number = 0) {
         handlerMenuTimeout();
     } else if(confirmState.openConfirm) {
         saveNodesValue(confirmState.confirmThirdPanel!, confirmState.confirmSecondPanel!);
+    } else if(enabledDiagnosticPatternsFullScreen.value) {
+        saveNodesValue(menuState.thirdPanel!, menuState.secondPanel!);
     }
 };
 
@@ -1116,7 +1128,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
     const previousNodesActions: { [key: string]: () => void } = {
         // 處理 Confirm 動作
         ChangingMessage: () => handleChangingMessageAction(nodes),
-        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes)
+        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes),
+        [DiagnosticPatternsNodesEnum.key]: () => handlerDiagnosticPatternsAction(),
     }
 
     // 當為 previousNodes.key 時，執行動作
@@ -1229,7 +1242,7 @@ function handleResetAction(previousNodes: Nodes, nodes: Nodes) {
         resetColor();
         return;
     };
-    
+
     const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
     store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key]))}});
     
@@ -1286,21 +1299,34 @@ function factorySettingOSDMessage() {
         confirmState.openConfirm = true;
     }
 
+    hideMenu();
+    handlerMenuTimeout();
+    setupConfirmState();
+};
+
+function handlerDiagnosticPatternsAction() {
+    enabledDiagnosticPatternsFullScreen.value = !enabledDiagnosticPatternsFullScreen.value;
+    if(enabledDiagnosticPatternsFullScreen.value) {
+        hideMenu();
+    } else {
+        restoreSelectedMenu();
+        // handlerMenuSelectedItem();
+    }
+};
+
+function hideMenu(){
     // 當是開啟全部選單時，暫時關閉且紀錄目前開啟的選當類型
     if(openAllMenu.value) {
         openAllMenu.value = false;
         confirmState.selectedMenus = "openAllMenu";
     };
-
+    
     // 當是開啟自訂選單時，暫時關閉且紀錄目前開啟的選當類型
     if(openAssignButton.value) {
         openAssignButton.value = false;
         confirmState.selectedMenus = "openAssignButton";
     };
-
-    handlerMenuTimeout();
-    setupConfirmState();
-};
+}
 
 // 重啟選擇的 menu
 function restoreSelectedMenu() {
@@ -1318,6 +1344,11 @@ function handlerCloseConfirmAction() {
     restoreSelectedMenu();
     undoTheStaging();
 
+    handlerMenuSelectedItem();
+    setBrightnessDefaultValue();
+}
+
+function handlerMenuSelectedItem() {
     if(menuState.currentPanelNumber == 2) {
         let index = openAllMenu.value
             ? menuState.menuPanel!.nodes?.findIndex(s => s.key == BackNodesEnum.key)
@@ -1331,10 +1362,7 @@ function handlerCloseConfirmAction() {
         menuState.thirdPanelIndex = index as number;
         menuState.thirdPanel = menuState.secondPanel!.nodes![menuState.thirdPanelIndex];
     }
-
-    setBrightnessDefaultValue();
-
-}
+};
 
 // 恢復預覽的結果
 function undoTheStaging() {
