@@ -1,5 +1,8 @@
 <template>
     <div class="modal confirm">
+
+        <img class="warn-img" src="@/assets/images/warning.png" alt="warn" />
+
         <div class="title" v-text="toLanguageText(mainSectionNodes?.language!)"></div>
         <div class="confirm-text" v-text="toLanguageText(secondarySectionNodes?.language!)"></div>
         <div class="confirm-button-section">

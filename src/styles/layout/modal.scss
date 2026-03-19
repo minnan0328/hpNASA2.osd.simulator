@@ -1,4 +1,4 @@
-@use "@/styles/_var" as *;
+@use "../_var.scss" as *;
 
 .modal {
     position: absolute;
@@ -10,6 +10,16 @@
     border: 2px solid  $light-grey;
     padding: 16px 8px;
     font-size: 10px;
+    z-index: 3;
+
+    .warn-img {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 48px;
+        height: 48px;
+
+    }
 
     &.toast {
         display: flex;
@@ -42,19 +52,20 @@
         .confirm-button {
             padding: 8px 16px;
             color: $white;
-            background-color: $light-grey;
+            background-color: rgb(0, 0, 5);
             border: 2px solid $black;
 
             &.selected {
                 border-color: $white;
+                background-color: rgb(50, 50, 50);
             }
 
             &.Confirm {
-                color: green;
+                color: rgb(0, 255, 0);
             }
 
             &.Cancel {
-                color: red;
+                color: rgb(255, 0, 0);
             }
         }
     }

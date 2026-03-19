@@ -426,7 +426,7 @@ function selectedMenuPanel(nodes: Nodes) {
 
 /* 控制選單按鈕組合列表 */
 // 是否啟用選單控制按鈕
-const isControllerMenusButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !enabledDiagnosticPatternsFullScreen.value);
+const isControllerMenusButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !confirmState.openConfirm && !enabledDiagnosticPatternsFullScreen.value);
 
 const ControllerTypes: Record<string, ControllerButtonList> = reactive({
     empty: { image: null, event: () => {}, stopEvent: () => {}, type: "Button" },
@@ -468,9 +468,6 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
         return createMenuButtonList();
     }
 
-    if(enabledDiagnosticPatternsFullScreen.value) {
-        return diagnosticPatternsButtonList;
-    }
     
     if(openAssignButton.value && menuState.menuPanel) {
         return handlerModeControllerButtonList(menuState.secondPanel!, menuState.menuPanel);
@@ -479,7 +476,10 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
     if(confirmState.openConfirm && confirmState.confirmMainPanel) {
         return confirmButtonList;
     }
-
+    
+    if(enabledDiagnosticPatternsFullScreen.value) {
+        return diagnosticPatternsButtonList;
+    }
 
     return [];
 });
@@ -1299,7 +1299,17 @@ function factorySettingOSDMessage() {
         confirmState.openConfirm = true;
     }
 
-    hideMenu();
+    // 當是開啟全部選單時，暫時關閉且紀錄目前開啟的選當類型
+    if(openAllMenu.value) {
+        openAllMenu.value = false;
+        confirmState.selectedMenus = "openAllMenu";
+    };
+
+    // 當是開啟自訂選單時，暫時關閉且紀錄目前開啟的選當類型
+    if(openAssignButton.value) {
+        openAssignButton.value = false;
+        confirmState.selectedMenus = "openAssignButton";
+    };
     handlerMenuTimeout();
     setupConfirmState();
 };
@@ -1310,7 +1320,6 @@ function handlerDiagnosticPatternsAction() {
         hideMenu();
     } else {
         restoreSelectedMenu();
-        // handlerMenuSelectedItem();
     }
 };
 
