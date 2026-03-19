@@ -1228,14 +1228,14 @@ function handleResetAction(previousNodes: Nodes, nodes: Nodes) {
     if (previousNodes.key === ColorNodesEnum.key) {
         resetColor();
         return;
-
-    } else if(previousNodes.key === BrightnessPlusNodesEnum.key) {
-        setColorBrightnessDefaultValue();
-    } 
+    };
     
     const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
     store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key]))}});
     
+    if(previousNodes.key === BrightnessPlusNodesEnum.key) {
+        setColorBrightnessDefaultValue();
+    } 
 };
 
 //恢復原廠設定

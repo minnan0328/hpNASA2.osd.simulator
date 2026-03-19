@@ -13,14 +13,16 @@ export function setBrightnessDefaultValue() {
     store.$state.information.nodes[2].result = store.$state.color.result;
 
     const colorResult = store.$state.color.nodes.find(n => n.result == store.$state.color.result);
-
+    
     store.$state.brightnessPlus.nodes[0].result = colorResult.brightness;
     store.$state.brightnessPlus.nodes[0].nodes[0].result = colorResult.brightness;
+
     store.$state.brightnessPlus.nodes[1].selected = colorResult.contrast;
     store.$state.brightnessPlus.nodes[1].nodes[0].selected = colorResult.contrast;
     
     store.$state.brightnessPlus.nodes[0].selected = colorResult.brightness;
     store.$state.brightnessPlus.nodes[0].nodes[0].selected = colorResult.brightness;
+
     store.$state.brightnessPlus.nodes[1].result = colorResult.contrast;
     store.$state.brightnessPlus.nodes[1].nodes[0].result = colorResult.contrast;
     
