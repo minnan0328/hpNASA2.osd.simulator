@@ -17,7 +17,7 @@ export default class OSDMessagesNodes extends DefaultNodes implements Nodes {
         German: "OSD-Nachrichten",
         SimplifiedChinese: "OSD 消息",
         TraditionalChinese: "OSD 訊息",
-        English: "Monitor Status",
+        English: "OSD Messages",
         Español: "Mensajes OSD",
         French: "Messages OSD",
         Italian: "Messaggi OSD",

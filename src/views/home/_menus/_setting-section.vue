@@ -39,7 +39,7 @@
 
                         <!-- 設定狀態 -->
                         <div class="item state-item" v-if="secondNodes.displayState">
-                            <span class="state" >state：{{toDisplayValueLanguageText(secondNodes)}}</span>
+                            <span class="state" >Status：{{toDisplayValueLanguageText(secondNodes)}}</span>
                         </div>
                         <!-- 設定狀態 -->
 
@@ -99,7 +99,7 @@
 
                         <!-- 設定狀態 -->
                         <div class="item state-item" v-if="thirdNodes.displayState">
-                            <span class="state" >status：{{toDisplayValueLanguageText(thirdNodes)}}</span>
+                            <span class="state" >Status：{{toDisplayValueLanguageText(thirdNodes)}}</span>
                         </div>
                         <!-- 設定狀態 -->
 

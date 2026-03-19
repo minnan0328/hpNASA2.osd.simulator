@@ -1,6 +1,6 @@
 <template>
     <div :class="['monitor-status', 'top']">
-        <div class="monitor-status-title">{{ toLanguageText(menuStateResult.monitorStatus.nodes.language!) }}</div>
+        <div class="monitor-status-title">Monitor Status</div>
         <div class="monitor-status-info input">
             <template v-for="currentInput in menuStateResult.input.nodes">
                 <p v-if="currentInput.mode == ModeType.radio"
