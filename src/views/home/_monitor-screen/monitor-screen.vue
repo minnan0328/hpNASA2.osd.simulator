@@ -12,6 +12,7 @@
         v-if="showScreen && !monitorScreenResult.diagnosticPatterns.start">
         <img :src="monitorScreenResult.blackStretchImage" alt="">
     </div>
+    
     <div v-else-if="monitorScreenResult.diagnosticPatterns.start" :key="monitorScreenResult.diagnosticPatterns.patterns"
         :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.patterns]">
     </div>
@@ -113,6 +114,7 @@ onMounted(() => {
             height: $screen-height;
         }
     }
+
     &::before {
         position: absolute;
         content: "";
@@ -132,8 +134,8 @@ onMounted(() => {
         bottom: v-bind("monitorScreenResult.imagePosition.y");
         left:  v-bind("monitorScreenResult.imagePosition.x");
         mix-blend-mode: multiply;
+
         filter: 
-            // hue-rotate(v-bind("monitorScreenResult.RGB"))
             brightness(v-bind("monitorScreenResult.brightness"))
             blur(v-bind("monitorScreenResult.sharpness"));
     }
