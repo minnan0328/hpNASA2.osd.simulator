@@ -391,11 +391,7 @@ function handleAssignButton(key: string) {
         return;
     }
 
-    if(key == AssignNextActiveInputNodesEnum.key) {
-        openAllMenu.value = true;
-        selectedMenuPanel(assignMenus.value[key].node as Nodes);
-        handlerNextPanel();
-    } else if(key == AssignAutoAdjustmentNodesEnum.key) {
+    if(key == AssignAutoAdjustmentNodesEnum.key) {
         handlerClose();
         homeEvent.autoAdjustment();
         return;
