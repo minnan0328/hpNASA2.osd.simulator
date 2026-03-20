@@ -159,10 +159,18 @@ export const monitorResult = computed(() => {
 
 const toImageColor = computed(() => {
     // 自訂 RGB，RGB 轉換
-    const RGB = {
-        r: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[0].result == 255 ? color.value.nodes[6].nodes[0].result : (color.value.nodes[6].nodes[0].result / 2) + 127.5 as number : 255,
-        g:(color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[1].result == 255 ? color.value.nodes[6].nodes[1].result : (color.value.nodes[6].nodes[1].result / 2) + 127.5 as number : 255,
-        b: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[2].result == 255 ? color.value.nodes[6].nodes[2].result : (color.value.nodes[6].nodes[2].result / 2) + 127.5 as number : 255
+    let RGB: {r: number, g: number, b: number} = {r: 0, g: 0, b: 0};
+
+    RGB = {
+        r: color.value.nodes[6].nodes[0].result == 255
+            ? color.value.nodes[6].nodes[0].result 
+            : (color.value.nodes[6].nodes[0].result / 2) + 127.5 as number,
+        g: color.value.nodes[6].nodes[1].result == 255
+            ? color.value.nodes[6].nodes[1].result
+            : (color.value.nodes[6].nodes[1].result / 2) + 127.5 as number,
+        b: color.value.nodes[6].nodes[2].result == 255
+            ? color.value.nodes[6].nodes[2].result
+            : (color.value.nodes[6].nodes[2].result / 2) + 127.5 as number
     }
 
     return RGB;

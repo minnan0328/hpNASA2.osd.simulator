@@ -103,6 +103,7 @@ onMounted(() => {
     top: 1px;
     left: 0px;
     overflow: hidden;
+    background-color: $black;
 
     &.FilltoAspectRatio {
         max-width: 682px;

@@ -1640,6 +1640,7 @@ function handlerMenuTimeout() {
 	display: flex;
 	bottom: 0px;
 	right: 84px;
+    z-index: 2;
 
     &.accessibility {
         transform: scale(1.1);
