@@ -166,7 +166,7 @@ import {
     OnNodes, OffNodes, YesNodes, NoNodes,
     NextPageButtonsNodes, PreviousPageButtonsNodes
 } from '@/models/class/_utilities';
-import { setBrightnessDefaultValue, setDynamicContrastValue, setColorBrightnessDefaultValue, resetColor } from '@/service/set-default-value';
+import { setBrightnessDefaultValue, setDynamicContrastValue, resetBrightness, resetColor } from '@/service/set-default-value';
 const MenusDefaultEnum = new MenusDefaultModel();
 
 const BrightnessPlusNodesEnum = new BrightnessPlusNodes();
@@ -1239,12 +1239,14 @@ function handleResetAction(previousNodes: Nodes, nodes: Nodes) {
         return;
     };
 
+    if(previousNodes.key === BrightnessPlusNodesEnum.key) {
+        resetBrightness();
+        return;
+    } 
+
     const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
     store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key]))}});
     
-    if(previousNodes.key === BrightnessPlusNodesEnum.key) {
-        setColorBrightnessDefaultValue();
-    } 
 };
 
 //恢復原廠設定

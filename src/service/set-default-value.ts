@@ -39,15 +39,25 @@ export function setDynamicContrastValue() {
     store.$state.brightnessPlus.nodes[2].selected = OffNodesEnum.selected;
 }
 
-export function setColorBrightnessDefaultValue() {
-    const brightness = store.$state.brightnessPlus.nodes[0];
-    const contrast = store.$state.brightnessPlus.nodes[1];
-    const colorIndex = store.$state.color.nodes.findIndex(n => n.result == store.$state.color.result);
+export function resetBrightness() {
+    const originalColorNodes = ColorNodesEnum.nodes.find(n => n.result == store.$state.color.result);
+
+    store.$state.brightnessPlus.nodes[0].result = JSON.parse(JSON.stringify(originalColorNodes.brightness));
+    store.$state.brightnessPlus.nodes[0].nodes[0].result = JSON.parse(JSON.stringify(originalColorNodes.brightness));
+
+    store.$state.brightnessPlus.nodes[1].selected = JSON.parse(JSON.stringify(originalColorNodes.contrast));
+    store.$state.brightnessPlus.nodes[1].nodes[0].selected = JSON.parse(JSON.stringify(originalColorNodes.contrast));
     
-    if(colorIndex !== -1) {
-        store.$state.color.nodes[colorIndex].brightness = brightness.result;
-        store.$state.color.nodes[colorIndex].contrast = contrast.result;
-    }
+    store.$state.brightnessPlus.nodes[0].selected = JSON.parse(JSON.stringify(originalColorNodes.brightness));
+    store.$state.brightnessPlus.nodes[0].nodes[0].selected = JSON.parse(JSON.stringify(originalColorNodes.brightness));
+
+    store.$state.brightnessPlus.nodes[1].result = JSON.parse(JSON.stringify(originalColorNodes.contrast));
+    store.$state.brightnessPlus.nodes[1].nodes[0].result = JSON.parse(JSON.stringify(originalColorNodes.contrast));
+
+    const colorResult = store.$state.color.nodes.find(n => n.result == store.$state.color.result);
+
+    colorResult.brightness = JSON.parse(JSON.stringify(originalColorNodes.brightness));
+    colorResult.contrast = JSON.parse(JSON.stringify(originalColorNodes.contrast));
 }
 
 export function resetColor() {
