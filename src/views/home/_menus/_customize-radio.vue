@@ -73,7 +73,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
         width: 10px;
         height: 10px;
         background-color: $black;
-        border: 1px solid $black-28;
+        border: 1px solid $radio-border-color;
         border-radius: 50%;
         margin-right: 4px;
 
@@ -101,7 +101,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
         &.customize-radio {
             .round {
                 background-color: $black-28;
-                border: 1px solid $light-grey;
+                border: 1px solid $radio-border-color;
 
                 &.checked::before {
                     background-color: $white;
